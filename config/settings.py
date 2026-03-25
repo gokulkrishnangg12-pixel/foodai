@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-foc$i&j1s-k-!y043f682^h2rn+$zgc5oe=w%!9q^79jfs&%cs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,3 +127,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Add to foodhealth/settings.py
+MIDDLEWARE = [
+    # ... other middleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
