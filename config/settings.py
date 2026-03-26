@@ -77,24 +77,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-ON_VERCEL = os.environ.get('VERCEL') == '1'
-
-if ON_VERCEL:
-    import shutil
-    TMP_DB_PATH = '/tmp/db.sqlite3'
-    if not os.path.exists(TMP_DB_PATH):
-        try:
-            shutil.copy2(BASE_DIR / 'db.sqlite3', TMP_DB_PATH)
-        except Exception:
-            pass
-    db_path = TMP_DB_PATH
-else:
-    db_path = BASE_DIR / 'db.sqlite3'
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': db_path,
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -141,14 +127,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-if ON_VERCEL:
-    MEDIA_ROOT = '/tmp/media'
-    os.makedirs(MEDIA_ROOT, exist_ok=True)
-else:
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+CSRF_TRUSTED_ORIGINS = ['https://*.up.railway.app']
 
